@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %} Add New Note {% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="card w-50 shadow border" style="margin-left: 17rem;">
+        <div class="card-body">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="card-title">
+                    <h5 class="text-center">Add New Note</h5>
+                    <div class="mb-2">
+                        <label for="NotesInputTitle" class="form-label">Note Title</label>
+                        <input type="text" class="form-control" name="title" id="NoteInputTitle"
+                            aria-describedby="noteHelp" placeholder="Note Title.." title="Please enter your note title."
+                            required>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label for="NoteInput" class="form-label">Note</label>
+                    <textarea type="text" name="note" rows="5" cols="40" class="form-control" id="NoteInput"
+                        aria-describedby="noteHelp" placeholder="Note.." required></textarea>
+                </div>
+                <div class="float-end" style="float: right;">
+                    <input type="submit" value="Add Note" class="btn btn-success">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
