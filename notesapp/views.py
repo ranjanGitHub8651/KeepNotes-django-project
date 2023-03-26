@@ -3,13 +3,24 @@ from django.utils import timezone
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .models import KeepNote
+from django.core.paginator import Paginator
 
 def BasePage(request):
     return render(request, 'base.html')
 
 def Index(request):
     notes = KeepNote.objects.all()
-    return render(request, 'index.html', {'notes':notes})
+    # Showing all notes per page > 3
+    paginator = Paginator(notes, 3)
+    page_number = request.GET.get('page')
+    notes = paginator.get_page(page_number)
+    if(request.method=='GET'):
+        noteTitle = request.GET.get('searchtitle')
+        if noteTitle:
+            notes = KeepNote.objects.filter(title__icontains=noteTitle)
+
+    data = {'notes':notes}
+    return render(request, 'index.html', data)
 
 def AddNewNotes(request):
     note_created_on = timezone.now()

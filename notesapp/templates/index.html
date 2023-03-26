@@ -3,6 +3,15 @@
 
 {% block content %}
 <div class="container">
+    <!-- <div class="row">
+        <form class="form-inline my-2 my-lg-0" method="GET" accept="" class="form-inline">
+            <input class="form-control mr-sm-2 search-button-input" name="searchtitle" type="search"
+                placeholder="Search Notes Via Titles.." aria-label="Search" required>
+            <button class="btn btn-outline-success my-2 my-sm-0 search-button" type="submit"><i class="fa fa-search"
+                    aria-hidden="true"></i>
+            </button>
+        </form>
+    </div> -->
     <div class="row">
         {% if notes %}
         {% for note in notes %}
@@ -29,12 +38,36 @@
             </div>
         </div>
         {% endfor %}
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination step-links justify-content-end">
+                {% if notes.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="/home/?page=1" tabindex="-1">&laquo; First</a>
+                    <a class="page-link" href="/home/?page={{notes.previous_page_number}}">Previous</a>
+                </li>
+                {% endif %}
+                <li class="current">
+                    <a class="page-link" href="#">
+                        Page {{notes.number}} of {{notes.paginator.num_pages}}.
+                    </a>
+                </li>
+                {% if notes.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ notes.next_page_number }}">Next</a>
+                    <a class="page-link" href="?page={{notes.paginator.num_pages}}">Last &raquo;</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+
         {% else %}
         <div class="col-12 text-center">
             <h6 class="text-muted">No Notes Available</h6>
         </div>
         {% endif %}
     </div>
+
     <!-- <div class="row">
         <div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel"
             aria-hidden="true">
@@ -64,6 +97,7 @@
     /* .delete-and-update * {
         display: none;
     }
+    
 
     .show-edit_delete:hover {
         display: block;
