@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-
+{% load static %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-2">
     <!-- <div class="row">
         <form class="form-inline my-2 my-lg-0" method="GET" accept="" class="form-inline">
             <input class="form-control mr-sm-2 search-button-input" name="searchtitle" type="search"
@@ -16,35 +16,37 @@
         {% if notes %}
         {% for note in notes %}
         <div class="col-md-4 mb-3">
-            <div class="card" style="width: 22rem; height: 19rem;">
+            <div class="card" style="width: 22rem;">
                 <div class="card-body show-edit_delete">
                     <div class="row">
                         <div class="col-md-6">
-                            <h5 class="card-title">{{note.title}}</h5>
+                            <h5 class="card-title">{{note.title|title}}</h5>
                         </div>
                         <div class="col-md-6">{{note.created_on|date:'d-m-Y h:i'}}</div>
                     </div>
-                    <p class="card-text">{{note.notes}}</p>
+                    <p class="card-text">
+                        {{note.notes}}
+                    </p>
                     <div class="delete-and-update">
                         <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#editNoteModal"> -->
                         <a href="../editnote/{{note.id}}/" class="btn btn-info card-link">Edit <i class="fa fa-pencil"
                                 aria-hidden="true"></i></a>
                         <!-- </button> -->
-                        <a href="../deletenote/{{note.id}}/" class="btn btn-danger card-link">Delete <i
+                        <a href="../deletenote/{{note.id}}/" id="delete-note" class="btn btn-danger card-link">Delete <i
                                 class="fa fa-trash" aria-hidden="true"></i></a>
                     </div>
                 </div>
             </div>
         </div>
         {% endfor %}
-
+        {% if notes|length >= 3 %}
         <nav aria-label="Page navigation example">
             <ul class="pagination step-links justify-content-end">
                 {% if notes.has_previous %}
-                <li class="page-item">
+                <li class="page-item d-flex">
                     <a class="page-link" href="/home/?page=1" tabindex="-1">&laquo; First</a>
-                    <a class="page-link" href="/home/?page={{notes.previous_page_number}}">Previous</a>
+                    <a class="page-link" href="/home/?page={{notes.previous_page_number}}">Prev</a>
                 </li>
                 {% endif %}
                 <li class="current">
@@ -53,13 +55,14 @@
                     </a>
                 </li>
                 {% if notes.has_next %}
-                <li class="page-item">
+                <li class="page-item d-flex">
                     <a class="page-link" href="?page={{ notes.next_page_number }}">Next</a>
                     <a class="page-link" href="?page={{notes.paginator.num_pages}}">Last &raquo;</a>
                 </li>
                 {% endif %}
             </ul>
         </nav>
+        {% endif %}
 
         {% else %}
         <div class="col-12 text-center">
@@ -68,39 +71,7 @@
         {% endif %}
     </div>
 
-    <!-- <div class="row">
-        <div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editNoteModalLabel">Update Note</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <h1>Edit form will be here..</h1>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-</div>
-<style>
-    /* .delete-and-update * {
-        display: none;
-    }
-    
-
-    .show-edit_delete:hover {
-        display: block;
-    } */
-</style>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/main.js' %}"></script>
 {% endblock %}

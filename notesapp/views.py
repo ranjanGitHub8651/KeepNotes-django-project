@@ -14,14 +14,13 @@ def BasePage(request):
 def Index(request):
     notes = KeepNote.objects.all()
     # Showing all notes per page > 3
-    paginator = Paginator(notes, 3)
+    paginator = Paginator(notes, 6)
     page_number = request.GET.get('page')
     notes = paginator.get_page(page_number)
     if(request.method=='GET'):
         noteTitle = request.GET.get('searchtitle')
         if noteTitle:
             notes = KeepNote.objects.filter(title__icontains=noteTitle)
-
     data = {'notes':notes}
     return render(request, 'index.html', data)
 
